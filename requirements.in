@@ -1,0 +1,4 @@
+faker
+sqlalchemy
+python-dotenv
+pyyaml

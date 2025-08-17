@@ -1,0 +1,4 @@
+black
+isort
+bump2version
+pip-tools
