@@ -1,0 +1,39 @@
+database:
+  host: $DB_HOST
+  port: $DB_PORT
+  name: $DB_NAME
+  users:
+    rw_username: $RW_USERNAME
+    rw_password: $RW_PASSWORD
+    ro_username: $RO_USERNAME
+    ro_password: $RO_PASSWORD
+    pg_password: $PG_PASSWORD
+  schema:
+    name: ESHOP_EU
+    table:
+      name: customers
+      columns:
+        - name: customer_id
+          type: uuid
+          primary_key: true
+        - name: name
+          type: varchar
+          not_null: true
+        - name: surname
+          type: varchar
+          not_null: true
+        - name: username
+          type: varchar
+          not_null: true
+        - name: is_active
+          type: boolean
+          not_null: true
+        - name: time_created
+          type: timestamp
+          not_null: true
+        - name: time_updated
+          type: timestamp
+        - name: age
+          type: integer
+          not_null: true
+          check: "age >= 18 AND age <= 100"
