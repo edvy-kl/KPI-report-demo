@@ -14,7 +14,17 @@ DashForge Lab streamlines setting up PostgreSQL + Grafana locally by letting you
 - Preconfigure Grafana dashboards (via YAML)  
 - Seed test data easily with Python/SQLAlchemy examples  
 
-### Use Cases
+---
+## Motivation
+
+Working with datasets from different runs and software versions often leads to repetitive plotting and one-off scripts. This setup provides a more streamlined approach:
+
+* **Centralized storage**: Test data from multiple runs and versions is stored in a single PostgreSQL database.
+* **Simple visualization**: Grafana dashboards replace ad-hoc plotting scripts, making it easy to compare results over time.
+* **Reusability**: Once the dashboards are configured, they can be reused across datasets without extra coding.
+* **Collaboration ready**: A Docker-based setup makes it easy to share the environment with teammates or replicate on new machines.
+
+#### Use Cases
 - Validate applications with realistic local database and dashboards  
 - Run QA checks without touching production  
 - Prototype and iterate on dashboards quickly  
@@ -159,11 +169,11 @@ DashForge Lab is designed **only for local development and testing**.
 It is not intended for production or long-running environments.
 
 * ❌ **Not secure** — credentials are stored in `.env` and containers run with minimal hardening
-* ❌ **No persistence** — data is lost when containers are removed unless you configure volumes yourself
+* ❌ **No persistence** — data is lost when volumes are removed
 * ❌ **Not optimized for scale** — container configs use defaults, not tuned for heavy loads or large datasets
 * ❌ **Limited scope** — supports PostgreSQL + Grafana only (no clustering, HA, or multi-DB setups)
 
-Use it as a sandbox for exploration, prototyping, QA, or demos — not for hosting production dashboards.
+Use it as a sandbox for exploration, prototyping, QA, or demos — not for hosting production dashboards!
 
 ---
 
