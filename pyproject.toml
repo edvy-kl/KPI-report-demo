@@ -1,5 +1,5 @@
 [project]
-name = "DashForgeLab"
-version = "0.1.1"
-description = "A Docker-based setup for PostgreSQL and Grafana with YAML-configured database users and schema."
-authors = ["neuragicus"]
+name = "KPI-report-demo"
+version = "0.1.0"
+description = "A data-driven project analyzing IT service desk performance using SQL, Postgres, and Grafana."
+authors = ["edvy-kl"]
