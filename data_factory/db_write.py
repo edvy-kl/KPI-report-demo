@@ -1,53 +1,53 @@
 """Database write operations module.
 
 This module provides functions for writing data to the database,
-including bulk upserting (insert or update) customer records.
+including bulk upserting (insert or update) ticket records.
 """
 
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.exc import SQLAlchemyError
 
-from data_factory.sqlalchemy_models import Customer
+from data_factory.sqlalchemy_models import Ticket
 
 
-def upsert_data(session, fake_customers: list[Customer]):
-    """Bulk upsert customer records into the database.
+def upsert_data(session, fake_tickets: list[Ticket]):
+    """Bulk upsert ticket records into the database.
 
     Args:
         session: SQLAlchemy session factory
-        fake_customers: List of customer data dictionaries
+        fake_tickets: List of ticket data dictionaries
     """
 
     with session() as session:
         try:
 
-            stmt = insert(Customer).values(
+            stmt = insert(Ticket).values(
                 [
                     {
-                        "customer_id": c.customer_id,
-                        "name": c.name,
-                        "surname": c.surname,
-                        "username": c.username,
-                        "is_active": c.is_active,
+                        "ticket_id": c.ticket_id,
+                        "active": c.active,
                         "time_created": c.time_created,
-                        "time_updated": c.time_updated,
-                        "age": c.age,
+                        "time_assigned": c.time_assigned,
+                        "time_closed": c.time_closed,
+                        "status": c.status,
+                        "success_rate": c.success_rate,
+                        "needed_call": c.needed_call,
                     }
-                    for c in fake_customers
+                    for c in fake_tickets
                 ]
             )
 
             # Use the 'on_conflict_do_update' method to handle conflicts
             stmt = stmt.on_conflict_do_update(
-                index_elements=["customer_id"],  # The column(s) for conflict resolution
+                index_elements=["ticket_id"],  # The column(s) for conflict resolution
                 set_=dict(
-                    name=stmt.excluded.name,
-                    surname=stmt.excluded.surname,
-                    username=stmt.excluded.username,
-                    is_active=stmt.excluded.is_active,
+                    active=stmt.excluded.active,
                     time_created=stmt.excluded.time_created,
-                    time_updated=stmt.excluded.time_updated,
-                    age=stmt.excluded.age,
+                    time_assigned=stmt.excluded.time_assigned,
+                    time_closed=stmt.excluded.time_closed,
+                    status=stmt.excluded.status,
+                    success_rate=stmt.excluded.success_rate,
+                    needed_call=stmt.excluded.needed_call,
                 ),
             )
 

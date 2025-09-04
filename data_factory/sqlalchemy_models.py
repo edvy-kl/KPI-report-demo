@@ -14,28 +14,28 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 
-class Customer(Base):
+class Ticket(Base):
     """Customer model representing the customers table.
 
     Attributes:
-        customer_id (UUID): Unique identifier for the customer.
-        name (str): Customer's first name.
-        surname (str): Customer's last name.
-        username (str): Customer's username.
-        is_active (bool): Whether the customer account is active.
+        ticket_id (UUID): Unique identifier for the ticket.
+        active (bool): Whether the ticket is active.
         time_created (datetime): Timestamp when the record was created.
-        time_updated (datetime): Timestamp when the record was last updated.
-        age (int): Customer's age.
+         time_assigned (datetime): Timestamp when the record was assigned to an agent.
+        time_closed (datetime): Timestamp when the record was closed.
+        status (str): Status of the ticket.
+        success_rate (int): Customer rating.
+        needed_call (bool): Whether the followup call was needed.
     """
 
-    __tablename__ = "customers"
-    __table_args__ = {"schema": "ESHOP_EU"}
+    __tablename__ = "tickets"
+    __table_args__ = {"schema": "regional_office"}
 
-    customer_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    name = Column(String, nullable=False)
-    surname = Column(String, nullable=False)
-    username = Column(String, nullable=False)
-    is_active = Column(Boolean, nullable=False)
-    time_created = Column(DateTime, nullable=False, default=datetime.now(UTC))
-    time_updated = Column(DateTime, nullable=True)
-    age = Column(Integer, nullable=False)
+    ticket_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    active = Column(Boolean, nullable=False)
+    time_created = Column(DateTime, nullable=False)
+    time_assigned = Column(DateTime, nullable=False)
+    time_closed = Column(DateTime, nullable=True)
+    status = Column(String, nullable=False)
+    success_rate = Column(Integer, nullable=True)
+    needed_call = Column(Boolean, nullable=False)
