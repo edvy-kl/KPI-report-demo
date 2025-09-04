@@ -1,183 +1,96 @@
-# DashForge Lab
+# KPI Report Demo - Service Desk Data Analysis Project
+![dashboard.gif](docs/dashboard.gif)
+## Project Overview
+**Professional Showcase**: A comprehensive data analysis project demonstrating skills in:
+- Business case development
+- Key Performance Indicator (KPI) design
+- Data modeling and database schema design
+- Synthetic data generation
+- Data analysis using SQL
+- Business intelligence visualization with Grafana
 
-A lightweight framework for containerized Postgres and Grafana setups, enabling rapid database seeding and visualization **for local testing and data exploration only**.  
-Perfect for development, QA, and dashboard prototyping — not production use.  
+### Motivation
+Using open source tools for data analysis and KPI monitoring.
 
----
+### Project Scope
+This project was a end-to-end exercise in transforming raw service desk data into actionable business insights. My primary responsibilities included:
+- Defining the business case and strategic objectives
+- Identifying and designing meaningful KPIs
+- Setting up infrastructure using [DashForgeLab](https://github.com/neuragicus/DashForgeLab)
+- Designing and creating Ticket data model
+- Generating a realistic dataset using complex logic
+- Developing SQL queries for data analysis
+- Creating a Grafana dashboard for visual reporting
 
-## Overview
+## Business Goal
 
-DashForge Lab streamlines setting up PostgreSQL + Grafana locally by letting you:
+**Objective**: Systematically identify and address service desk performance gaps to continuously improve IT support quality and customer satisfaction.
 
-- Define schema, users, and tables with simple YAML configs  
-- Launch Postgres and Grafana containers with one command  
-- Preconfigure Grafana dashboards (via YAML)  
-- Seed test data easily with Python/SQLAlchemy examples  
+### Business Problem
 
----
-## Motivation
+**User Story**: As an IT Support team leader, I want to monitor the quality of the service my team provides, enabling data-driven improvements in support operations.
 
-Working with datasets from different runs and software versions often leads to repetitive plotting and one-off scripts. This setup provides a more streamlined approach:
+## Technical Stack
 
-* **Centralized storage**: Test data from multiple runs and versions is stored in a single PostgreSQL database.
-* **Simple visualization**: Grafana dashboards replace ad-hoc plotting scripts, making it easy to compare results over time.
-* **Reusability**: Once the dashboards are configured, they can be reused across datasets without extra coding.
-* **Collaboration ready**: A Docker-based setup makes it easy to share the environment with teammates or replicate on new machines.
+- **Database**: PostgreSQL
+- **Data Analysis**: SQL
+- **Visualization**: Grafana
 
-#### Use Cases
-- Validate applications with realistic local database and dashboards  
-- Run QA checks without touching production  
-- Prototype and iterate on dashboards quickly  
-- Spin up demo/training environments  
-- Experiment with SQL queries or ETL pipelines safely  
+## Key Performance Indicators (KPIs)
 
----
+| KPI | Business Rationale | Measurement | Improvement Target                                                                 |
+|-----|-------------------|-------------|------------------------------------------------------------------------------------|
+| Total Monthly Tickets | Understand support team workload | Number of tickets processed per month | Normalize ticket volume, identify peak periods                                     |
+| Ticket Status Analysis | Optimize workflow effectiveness | Number of tickets per closure status | Minimize unnecessary ticket submissions and Reduce need for technical escalation |
+| First Response Time | Improve initial support responsiveness | Average time between ticket creation and agent assignment | Reduce to <2 hours                                                                 |
+| Time to Resolution | Reduce operational inefficiencies | Monthly average time from ticket creation to closure | Decrease average resolution time by 15% quarterly                                  |
+| Ticket Closure Rate | Ensure timely problem solving | Percentage of tickets closed within 48 hours | Increase to >85% of tickets resolved within SLA                                    |
+| Callback Incidents | Identify complex issue patterns | Number of tickets requiring customer callback | Decrease callback rate by 20%                                                      |
+| Customer Satisfaction | Measure service quality perception | Average customer rating per month | Maintain rating above 4                                                            |
 
-## Prerequisites
-- **Docker**  
-- **Python 3.12+**  
-- [`yq`](https://github.com/mikefarah/yq) + `jq` for YAML/JSON processing  
 
----
+### KPI Metrics Explanation
+**Time to Resolution and Closure Rate**: These metrics are used together to provide a comprehensive view of service desk performance. While the average resolution time might show a low number (e.g., below 2 days), the closure rate reveals the percentage of tickets actually resolved within the desired timeframe. For example, an average of 1.8 days might mask that 40% of tickets take over 48 hours to close, highlighting the importance of using both metrics for a nuanced understanding of performance.
 
-## Installation
+## Repository Contents
 
-### System Dependencies
-```bash
-# Ubuntu/Debian
-sudo apt-get install yq jq
+- SQL analysis scripts
+- Grafana dashboard configuration JSON file
+- Sample screenshots of the report
+- Postgres and Grafana setup using [DashForgeLab](https://github.com/neuragicus/DashForgeLab)
+- Scripts for Ticket data model and database population
 
-# macOS
-brew install yq jq
-````
-
-### Python Dependencies
-
-```bash
-# Create and activate virtual environment (recommended)
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# Install requirements
-pip install -r requirements.txt
+## How to reproduce the project
+- Install the requirements:
+```pip install -r requirements.txt```
+- Add a `.env` file containing your database credentials, refer to  [DashForgeLab](https://github.com/neuragicus/DashForgeLab) documentation for extensive setup documentation. 
+- Start the postgres database:
+```./database/start-postgres-db.sh```
+- Insert tickets dummy data:
+```python insert_dummy_data.py```
+- Start grafana: 
+```./grafana/start-grafana.sh```
+- Go to `localhost:3000` to access grafanaUI and login with your selected credentials (you should have them in your `.env` )
+- Add a postgres datasource via the grafana UI:
 ```
-
----
-
-## Quick Start
-
-### 1. Database Setup
-
-1. Create a `.env` file with database variables (see `database/db_setup.yaml`):
-
-   ```env
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_NAME=your_database_name
-   RW_USERNAME=read_write_user
-   RW_PASSWORD=rw_password
-   RO_USERNAME=read_only_user
-   RO_PASSWORD=ro_password
-   PG_PASSWORD=postgres_password
-   ```
-2. Configure schema in `database/db_setup.yaml`.
-3. Start Postgres:
-
-   ```bash
-   ./database/start-postgres-db.sh
-   ```
-
-### 2. Grafana Setup
-
-1. Add Grafana credentials in `.env`:
-
-   ```env
-   GRAFANA_ADMIN_USER=admin
-   GRAFANA_ADMIN_PASSWORD=your_secure_password
-   ```
-2. Start Grafana:
-
-   ```bash
-   ./grafana/start-grafana.sh
-   ```
-3. Access Grafana → [http://localhost:3000](http://localhost:3000)
-
----
-
-## Data Seeding
-
-A Python example (`insert_dummy_data.py`) shows how to insert data with SQLAlchemy.
-
-* Define models in `data_factory/sqlalchemy_models.py`
-* Customize relationships, validations, and constraints
-* Run seeding:
-
-  ```bash
-  python insert_dummy_data.py
-  ```
-
-> **Note:** For larger/time-series datasets, consider batching inserts, tuning Postgres configs, and adding indexes.
-
----
-
-## Customization
-
-### Database
-
-* Update `database/db_setup.yaml` for schema, tables, and permissions
-* Tweak `database/postgresql.conf` for performance
-
-### Grafana
-
-* Configure a PostgreSQL datasource (`postgres-dashforge`) with your DB credentials
-
----
-
-Here’s an updated version reflecting that the Postgres container now uses a persistent volume (`dashforge_pg_data`), so you probably don’t want to remove it unless you really want to clear the data:
-
----
-
-## Cleanup
-
-To stop and remove Postgres/Grafana containers:
-
-```bash
-# Stop containers
-docker kill <container_id_or_name>
-
-# Remove containers
-docker rm <container_id_or_name>
+Navigate to Datasource and search for postgres. 
+Enter the details according to your setup:
+HostURL: postgres-dashforge:5432
+Database name: service_desk
+...
+your RO credentials from .env
+...
 ```
+- Navigate to add dashboard and import the json [service_desk_dashboard.json](grafana/service_desk_dashboard.json),
+By default, the json contains a unique ID for the datasource. If the panels don't automatically update the 
+data source, update it in each dashboard panel. This might happen due to limitation of exporting 
+dashboard using its json. 
 
-> **Note:** The Postgres container uses a persistent Docker volume (`dashforge_pg_data`) to store data. Removing the container does **not** delete the data.
+  
+## A snapshot of the project's result
+Below screenshots give you an overview of the dashboard created as a result of this project.
 
-If you want to also remove the volume and clear the database:
-
-```bash
-# List volumes
-docker volume ls
-
-# Remove the volume (this deletes all stored data!)
-docker volume rm dashforge_pg_data
-```
-
----
-
-## Limitations
-
-DashForge Lab is designed **only for local development and testing**.
-It is not intended for production or long-running environments.
-
-* ❌ **Not secure** — credentials are stored in `.env` and containers run with minimal hardening
-* ❌ **No persistence** — data is lost when volumes are removed
-* ❌ **Not optimized for scale** — container configs use defaults, not tuned for heavy loads or large datasets
-* ❌ **Limited scope** — supports PostgreSQL + Grafana only (no clustering, HA, or multi-DB setups)
-
-Use it as a sandbox for exploration, prototyping, QA, or demos — not for hosting production dashboards!
-
----
-
-## License
-
-MIT License
-
+![ticket count.png](docs/ticket%20count.png)
+![resp and res kpi.png](docs/resp%20and%20res%20kpi.png)
+![callback inc.png](docs/callback%20inc.png)
+![customer rating.png](docs/customer%20rating.png)
