@@ -9,31 +9,31 @@ database:
     ro_password: $RO_PASSWORD
     pg_password: $PG_PASSWORD
   schema:
-    name: ESHOP_EU
+    name: regional_office
     table:
-      name: customers
+      name: tickets
       columns:
-        - name: customer_id
+        - name: ticket_id
           type: uuid
           primary_key: true
-        - name: name
-          type: varchar
-          not_null: true
-        - name: surname
-          type: varchar
-          not_null: true
-        - name: username
-          type: varchar
-          not_null: true
-        - name: is_active
+        - name: active
           type: boolean
           not_null: true
         - name: time_created
           type: timestamp
           not_null: true
-        - name: time_updated
+        - name: time_assigned
           type: timestamp
-        - name: age
-          type: integer
           not_null: true
-          check: "age >= 18 AND age <= 100"
+        - name: time_closed
+          type: timestamp
+          not_null: false
+        - name: status
+          type: varchar
+          not_null: true
+        - name: success_rate
+          type: integer
+        - name: needed_call
+          type: boolean
+          not_null: true
+          check: "success_rate >= 1 AND success_rate <= 5"
