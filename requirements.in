@@ -2,3 +2,5 @@ faker
 sqlalchemy
 python-dotenv
 pyyaml
+psycopg2-binary
+yq
